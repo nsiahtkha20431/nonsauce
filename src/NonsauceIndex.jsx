@@ -3,27 +3,21 @@ import { Upload } from 'lucide-react';
 
 const styles = {
   container: {
+    backgroundColor: '#ffecf5',
     position: 'fixed',
     inset: 0,
-    backgroundColor: '#ffecf5',
     overflow: 'hidden',
     cursor: 'move',
     display: 'flex',  // Add this
     justifyContent: 'center',  // Add this
     alignItems: 'center'  // Add this
   },
-  draggableContent: {
-    position: 'absolute',
-    transformOrigin: 'center',
-    display: 'flex',
-    gap: '900px'
-  },
-  mainContent: {
+  brainDump: {
     width: '400px',
     backgroundColor: 'white',
     borderRadius: '12px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    padding: '24px'
+    padding: '24px',
   },
   moodboard: {
     width: '1600px',
@@ -31,9 +25,10 @@ const styles = {
     backgroundColor: 'white',
     borderRadius: '12px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    position: 'relative',
+    position: 'absolute',
     overflow: 'hidden',
-    marginTop: '-900px' 
+    left: '-3500px',  // Position to the left
+    top: '-1250px' 
   },
   uploadButton: {
     position: 'absolute',
@@ -60,8 +55,8 @@ const styles = {
   },
   resizeHandle: {
     position: 'absolute',
-    bottom: '0',
-    right: '0',
+    // bottom: '0',
+    // right: '0',
     width: '10px',
     height: '10px',
     backgroundColor: '#ff66b2',
@@ -294,7 +289,7 @@ const NonsauceIndex = () => {
     >
       <div 
         style={{
-          ...styles.draggableContent,
+          // ...styles.draggableContent,
           transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
           transition: isDragging ? 'none' : 'transform 0.1s ease-out'
         }}
@@ -321,9 +316,9 @@ const NonsauceIndex = () => {
           />
         </div>
 
-        <div style={styles.mainContent}>
+        <div style={styles.brainDump}>
           <h1 style={styles.title}>
-            ˚₊· ͟͟͞͞➳❥ brain dump ⋆｡°✩
+            ˚₊· ͟͟͞͞➳❥ my digital space ⋆｡°✩
           </h1>
           
           <div 
