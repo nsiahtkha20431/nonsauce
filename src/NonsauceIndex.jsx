@@ -176,12 +176,7 @@ const MoodboardImage = ({ image, onUpdate }) => {
 };
 
 const NonsauceIndex = () => {
-  const [position, setPosition] = useState(() => { //track position of draggable content
-    return {
-      x: 0,  
-      y: 0  
-    };
-  });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false); // if user is dragging or not
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 }); //stores initial coordinates when a drag operation begins
   const [scale, setScale] = useState(1); //tracks zoom level of the content, starting at 100%
@@ -198,6 +193,7 @@ const NonsauceIndex = () => {
   const handleMouseDown = (e) => {
     if (e.target.closest('.scroll-area') || e.target.closest('.moodboard')) return; //ignores if clicking within scroll-area in brain dump or if on the moodboard
     setIsDragging(true); // sets dragging to true
+    console.log('dragging!');
     setDragStart({ // records starting position of the drag operation
       x: e.clientX - position.x,
       y: e.clientY - position.y
@@ -217,16 +213,43 @@ const NonsauceIndex = () => {
   };
 
   const handleWheel = (e) => {
-    if (e.target.closest('.scroll-area') || e.target.closest('.moodboard')) { // ignores if within brain dump area or moodboard
+    if (e.target.closest('.scroll-area') || e.target.closest('.moodboard')) {
       return;
     }
     
-    // e.preventDefault(); // stops default scrool behaviour (scrolling page up and down)
+    e.preventDefault();
+    
+    // Get mouse position relative to viewport
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    
+    // Get current position of content relative to viewport
+    const contentRect = contentRef.current.getBoundingClientRect();
+    const contentX = contentRect.left;
+    const contentY = contentRect.top;
+    
+    // Calculate mouse position relative to content
+    const mouseContentX = mouseX - contentX;
+    const mouseContentY = mouseY - contentY;
+    
     const zoomSensitivity = 0.001;
     const delta = -e.deltaY * zoomSensitivity;
-    setScale(prevScale => { // adjusts scale based on wheel movement
-      const newScale = prevScale + delta;
-      return Math.min(Math.max(0.1, newScale), 2); // keeps scale between 10% and 200%
+    
+    setScale(prevScale => {
+      const newScale = Math.min(Math.max(0.1, prevScale + delta), 2);
+      
+      // Calculate position adjustment to keep mouse point steady
+      const scaleChange = newScale - prevScale;
+      const positionDeltaX = mouseContentX * scaleChange;
+      const positionDeltaY = mouseContentY * scaleChange;
+      
+      // Update position to compensate for zoom
+      setPosition(prevPos => ({
+        x: prevPos.x - positionDeltaX,
+        y: prevPos.y - positionDeltaY
+      }));
+      
+      return newScale;
     });
   };
 
