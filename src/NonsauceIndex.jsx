@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import './scrollbar.css';
+import CustomCursor from './CustomCursor';
+import './cursor.css';
 
 const styles = {
   container: {
@@ -8,7 +10,7 @@ const styles = {
     position: 'fixed',
     inset: 0,
     overflow: 'hidden',
-    cursor: 'move',
+    cursor: 'none',
     display: 'flex',  
     justifyContent: 'center',  
     alignItems: 'center', 
@@ -185,11 +187,11 @@ const NonsauceIndex = () => {
   const dummyPosts = [
     {
       id: 1,
-      content: "✧･ﾟ welcome to my little braindump website! there's no theme here, just vibes~ a place where i share things i'm working on, create moodboards and just a general creative outlet ♡(◡‿◡✿) ✧･ﾟ"
+      content: "✧･ﾟ welcome to my little braindump website! there's no theme here, just vibes~ a place where i share things i'm working on & a general creative outlet ♡(◡‿◡✿)"
     },
     {
       id: 2,
-      content: "ೀ⋆｡˚ feel free to zoom out and drag around to different sections! so far i have a couple of moodboards up and a section to make your own ⋆⭒˚.⋆"
+      content: "✧･ﾟ feel free to zoom out and drag around to different sections! ೀ⋆｡˚"
     },
     {
       id: 3,
@@ -199,9 +201,8 @@ const NonsauceIndex = () => {
 
   const handleMouseDown = (e) => {
     if (e.target.closest('.scroll-area') || e.target.closest('.moodboard')) return; //ignores if clicking within scroll-area in brain dump or if on the moodboard
-    setIsDragging(true); // sets dragging to true
-    console.log('dragging!');
-    setDragStart({ // records starting position of the drag operation
+    setIsDragging(true); 
+    setDragStart({ 
       x: e.clientX - position.x,
       y: e.clientY - position.y
     });
@@ -294,64 +295,69 @@ const NonsauceIndex = () => {
   }, [isDragging, dragStart]);
 
   return (
-    <div 
-      style={styles.container}
-      onMouseDown={handleMouseDown}
-      onWheel={handleWheel}
-    >
+    <>
+      <CustomCursor />
       <div 
-        style={{
-          // ...styles.draggableContent,
-          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-          transition: isDragging ? 'none' : 'transform 0.1s ease-out'
-        }}
+        className="custom-cursor"
+        style={styles.container}
+        onMouseDown={handleMouseDown}
+        onWheel={handleWheel}
       >
-        <div style={styles.moodboard} className="moodboard">
-          {images.map((image, index) => (
-            <MoodboardImage
-              key={index}
-              image={image}
-            />
-          ))}
-          <button
-            style={styles.uploadButton}
-            onClick={() => fileInputRef.current.click()}
-          >
-            <Upload size={20} />
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileSelect}
-            style={styles.hiddenInput}
-          />
-        </div>
-
-        <div style={styles.brainDump}>
-          <h1 style={styles.title}>
-            ˚₊· ͟͟͞͞➳❥ my digital space ⋆｡°✩
-          </h1>
-          
-          <div 
-            ref={contentRef}
-            className="scroll-area y2k-scrollbar"
-            style={styles.scrollArea}
-          >
-            {dummyPosts.map((post) => (
-              <div 
-                key={post.id}
-                style={styles.post}
-              >
-                <p style={styles.postText}>{post.content}</p>
-              </div>
+        <div 
+          style={{
+            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+          }}
+        >
+          <div style={styles.moodboard} className="moodboard custom-cursor">
+            {images.map((image, index) => (
+              <MoodboardImage
+                key={index}
+                image={image}
+              />
             ))}
+            <button
+              style={{
+                ...styles.uploadButton,
+                cursor: 'none' // Add cursor: none to button
+              }}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <Upload size={20} />
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              style={styles.hiddenInput}
+            />
+          </div>
+
+          <div style={styles.brainDump}>
+            <h1 style={styles.title}>
+              ˚₊· ͟͟͞͞➳❥ my digital space ⋆｡°✩
+            </h1>
+            
+            <div 
+              ref={contentRef}
+              className="scroll-area y2k-scrollbar custom-cursor"
+              style={styles.scrollArea}
+            >
+              {dummyPosts.map((post) => (
+                <div 
+                  key={post.id}
+                  style={styles.post}
+                >
+                  <p style={styles.postText}>{post.content}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
-  
 };
 
 export default NonsauceIndex;
