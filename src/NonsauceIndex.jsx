@@ -8,9 +8,10 @@ const styles = {
     inset: 0,
     overflow: 'hidden',
     cursor: 'move',
-    display: 'flex',  // Add this
-    justifyContent: 'center',  // Add this
-    alignItems: 'center'  // Add this
+    display: 'flex',  
+    justifyContent: 'center',  
+    alignItems: 'center', 
+    userSelect: 'none',
   },
   brainDump: {
     width: '400px',
@@ -27,7 +28,7 @@ const styles = {
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     position: 'absolute',
     overflow: 'hidden',
-    left: '-3500px',  // Position to the left
+    left: '-2500px',  
     top: '-1250px' 
   },
   uploadButton: {
@@ -78,7 +79,8 @@ const styles = {
     overflowY: 'auto',
     backgroundColor: '#fff0f7',
     borderRadius: '8px',
-    padding: '16px'
+    padding: '16px',
+    userSelect: 'text'
   },
   post: {
     backgroundColor: 'white',
@@ -179,11 +181,20 @@ const NonsauceIndex = () => {
   const fileInputRef = useRef(null); //ref to access file input
   const contentRef = useRef(null); // ref to access content elements
 
-  // create an array of 20 dummy posts for brain dump
-  const dummyPosts = Array(20).fill(null).map((_, i) => ({
-    id: i,
-    content: `✧･ﾟ Post ${i + 1}: Just adding some cute content here! Working on my latest project and feeling super inspired! Can't wait to share more! ♡(◡‿◡✿) ✧･ﾟ`
-  }));
+  const dummyPosts = [
+    {
+      id: 1,
+      content: "✧･ﾟ welcome to my little braindump website! there's no theme here, just vibes~ a place where i share things i'm working on, create moodboards and just a general creative outlet ♡(◡‿◡✿) ✧･ﾟ"
+    },
+    {
+      id: 2,
+      content: "ೀ⋆｡˚ feel free to zoom out and drag around to different sections! so far i have a couple of moodboards up and a section to make your own ⋆⭒˚.⋆"
+    },
+    {
+      id: 3,
+      content: "✧･ﾟ more things to come in the future ♥︎"
+    }
+  ];
 
   const handleMouseDown = (e) => {
     if (e.target.closest('.scroll-area') || e.target.closest('.moodboard')) return; //ignores if clicking within scroll-area in brain dump or if on the moodboard
