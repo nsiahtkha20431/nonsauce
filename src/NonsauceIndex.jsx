@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload } from 'lucide-react';
+import './scrollbar.css';
 
 const styles = {
   container: {
@@ -334,7 +335,7 @@ const NonsauceIndex = () => {
           
           <div 
             ref={contentRef}
-            className="scroll-area"
+            className="scroll-area y2k-scrollbar"
             style={styles.scrollArea}
           >
             {dummyPosts.map((post) => (
