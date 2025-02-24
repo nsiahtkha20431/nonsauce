@@ -4,124 +4,6 @@ import './scrollbar.css';
 import CustomCursor from './CustomCursor';
 import './cursor.css';
 
-// Hardcoded Moodboard Component
-const HardcodedMoodboard = () => {
-  const images = [
-    '/images/gab1.jpg',
-    '/images/gab2.jpg',
-    '/images/gab3.jpg',
-    '/images/gab4.jpg',
-    '/images/gab5.jpg',
-    '/images/gab6.jpg',
-    '/images/gab7.jpg',
-    '/images/gab8.jpg',
-    '/images/gab9.jpg',
-    '/images/gab10.jpg',
-    '/images/gab11.jpg',
-    '/images/gab12.jpg',
-    '/images/gab13.jpg',
-    '/images/gab14.jpg',
-  ];
-
-  return (
-    <div className="bg-white rounded-xl shadow-md p-6 w-96">
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#ff66b2', marginBottom: '16px', textAlign: 'center' }}>(っ◔◡◔)っ ♥ gabriette ♥</h2>
-      <div className="grid grid-cols-2 gap-4">
-        {images.map((image, index) => (
-          <div 
-            key={index} 
-            className="relative group overflow-hidden rounded-lg border-2 border-pink-300"
-          >
-            <img 
-              src={image}
-              alt={`Moodboard item ${index + 1}`}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Original MoodboardImage Component
-const MoodboardImage = ({ image, onUpdate }) => {
-  const [position, setPosition] = useState({ x: 50, y: 50 });
-  const [size, setSize] = useState({ width: 200, height: 200 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-
-  const handleMouseDown = (e, action) => {
-    e.stopPropagation();
-    if (action === 'drag') setIsDragging(true);
-    if (action === 'resize') setIsResizing(true);
-    setDragStart({
-      x: e.clientX - (action === 'drag' ? position.x : size.width),
-      y: e.clientY - (action === 'drag' ? position.y : size.height)
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      const newX = e.clientX - dragStart.x;
-      const newY = e.clientY - dragStart.y;
-      setPosition({ x: newX, y: newY });
-    }
-    if (isResizing) {
-      const newWidth = e.clientX - dragStart.x;
-      const newHeight = e.clientY - dragStart.y;
-      setSize({
-        width: Math.max(50, newWidth),
-        height: Math.max(50, newHeight)
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setIsResizing(false);
-  };
-
-  useEffect(() => {
-    if (isDragging || isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }
-  }, [isDragging, isResizing]);
-
-  return (
-    <div
-      style={{
-        ...styles.imageContainer,
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        width: `${size.width}px`,
-        height: `${size.height}px`
-      }}
-      onMouseDown={(e) => handleMouseDown(e, 'drag')}
-    >
-      <img
-        src={image}
-        alt="Moodboard item"
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover'
-        }}
-      />
-      <div
-        style={styles.resizeHandle}
-        onMouseDown={(e) => handleMouseDown(e, 'resize')}
-      />
-    </div>
-  );
-};
-
 const styles = {
   container: {
     backgroundColor: '#ffecf5',
@@ -134,10 +16,15 @@ const styles = {
     alignItems: 'center', 
     userSelect: 'none',
   },
-  hardcodedMoodboard: {
+  gabrietteMoodboard: {
     position: 'absolute',
     right: '-2500px',
     top: '-1250px',
+  },
+  heikeMoodboard: {
+    position: 'absolute',
+    right: '-3500px',
+    top: '-300px',
   },
   brainDump: {
     width: '400px',
@@ -217,6 +104,222 @@ const styles = {
   postText: {
     color: '#4a4a4a'
   }
+};
+
+const GabrietteMoodboard = () => {
+  const images = [ 
+    // '/images/gab1.jpg',
+    // '/images/gab2.jpg',
+    '/images/gab3.jpg',
+    '/images/gab4.jpg',
+    '/images/gab5.jpg',
+    // '/images/gab6.jpg',
+    '/images/gab7.jpg',
+    // '/images/gab8.jpg',
+    '/images/gab9.jpg',
+    '/images/gab10.jpg',
+    '/images/gab11.jpg',
+    // '/images/gab12.jpg',
+    '/images/gab13.jpg',
+    // '/images/gab14.jpg',
+  ];
+
+  const [layouts, setLayouts] = useState([]);
+
+  // Generate random layouts once on component mount
+  useEffect(() => {
+    const newLayouts = images.map((_, index) => ({
+      rotation: Math.random() * 11 - 5, // Random rotation between -5 and 6 degrees
+      scale: 0.9 + Math.random() * 0.2, // Random scale between 0.9 and 1.1
+      zIndex: index,
+    }));
+    setLayouts(newLayouts);
+  }, []);
+
+  return (
+    <div style={{ backgroundColor: '#ffebf2', padding: '20px' }}>
+      <h3 style={{ color: '#ff66b2', textAlign: 'center', marginBottom: '20px' }}>(っ◔◡◔)っ ♥ gabriette ♥</h3>
+      <div 
+        style={{ 
+          // border: '2px solid blue', 
+          // padding: '20px',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          // gap: '20px',
+          justifyItems: 'center'
+        }} 
+      >
+        {images.map((image, index) => {
+          const layout = layouts[index] || { rotation: 0, scale: 1, zIndex: index }; // Fallback while layouts are being generated
+          return (
+            <div 
+              key={index} 
+              className="relative group"
+              style={{
+                transform: `rotate(${layout.rotation}deg) scale(${layout.scale})`,
+                transition: 'all 0.3s ease-in-out',
+                zIndex: layout.zIndex,
+                // margin: '10px',
+                display: 'inline-block'
+              }}
+            >
+              <div>
+                <img 
+                  src={image}
+                  alt={`Moodboard item ${index + 1}`}
+                  className="object-cover"
+                  style={{ width: '200px' }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const HeikeMoodboard = () => {
+  const images = [ 
+    '/images/heike2.jpg',
+    '/images/heike1.jpg',
+    // '/images/heike3.jpg',
+    '/images/heike4.jpg',
+    // '/images/heike6.jpg',
+    '/images/heike7.jpg',
+    // '/images/heike8.jpg',
+    '/images/heike9.jpg',
+    '/images/heike10.jpg',
+    '/images/heike11.jpg',
+    '/images/heike5.jpg',
+  ];
+
+  const [layouts, setLayouts] = useState([]);
+
+  // Generate random layouts once on component mount
+  useEffect(() => {
+    const newLayouts = images.map((_, index) => ({
+      rotation: Math.random() * 11 - 5, // Random rotation between -5 and 6 degrees
+      scale: 0.9 + Math.random() * 0.2, // Random scale between 0.9 and 1.1
+      zIndex: index,
+    }));
+    setLayouts(newLayouts);
+  }, []);
+
+  return (
+    <div style={{ backgroundColor: '#ffebf2', padding: '20px' }}>
+      <h3 style={{ color: '#ff66b2', textAlign: 'center', marginBottom: '20px' }}>°⋆†☠  ♱ ann demuelemeester heike tall boots  ♱°⋆☠˙♥</h3>
+      <div 
+        style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          justifyItems: 'center'
+        }} 
+      >
+        {images.map((image, index) => {
+          const layout = layouts[index] || { rotation: 0, scale: 1, zIndex: index }; // Fallback while layouts are being generated
+          return (
+            <div 
+              key={index} 
+              className="relative group"
+              style={{
+                transform: `rotate(${layout.rotation}deg) scale(${layout.scale})`,
+                transition: 'all 0.3s ease-in-out',
+                zIndex: layout.zIndex,
+                display: 'inline-block'
+              }}
+            >
+              <div>
+                <img 
+                  src={image}
+                  alt={`Moodboard item ${index + 1}`}
+                  className="object-cover"
+                  style={{ width: '200px' }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const MoodboardImage = ({ image, onUpdate }) => {
+  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const [size, setSize] = useState({ width: 200, height: 200 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  const handleMouseDown = (e, action) => {
+    e.stopPropagation();
+    if (action === 'drag') setIsDragging(true);
+    if (action === 'resize') setIsResizing(true);
+    setDragStart({
+      x: e.clientX - (action === 'drag' ? position.x : size.width),
+      y: e.clientY - (action === 'drag' ? position.y : size.height)
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      const newX = e.clientX - dragStart.x;
+      const newY = e.clientY - dragStart.y;
+      setPosition({ x: newX, y: newY });
+    }
+    if (isResizing) {
+      const newWidth = e.clientX - dragStart.x;
+      const newHeight = e.clientY - dragStart.y;
+      setSize({
+        width: Math.max(50, newWidth),
+        height: Math.max(50, newHeight)
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setIsResizing(false);
+  };
+
+  useEffect(() => {
+    if (isDragging || isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, isResizing]);
+
+  return (
+    <div
+      style={{
+        ...styles.imageContainer,
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        width: `${size.width}px`,
+        height: `${size.height}px`
+      }}
+      onMouseDown={(e) => handleMouseDown(e, 'drag')}
+    >
+      <img
+        src={image}
+        alt="Moodboard item"
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover'
+        }}
+      />
+      <div
+        style={styles.resizeHandle}
+        onMouseDown={(e) => handleMouseDown(e, 'resize')}
+      />
+    </div>
+  );
 };
 
 const NonsauceIndex = () => {
@@ -361,8 +464,12 @@ const NonsauceIndex = () => {
             </div>
           </div>
 
-          <div style={styles.hardcodedMoodboard}>
-            <HardcodedMoodboard />
+          <div style={styles.gabrietteMoodboard}>
+            <GabrietteMoodboard />
+          </div>
+
+          <div style={styles.heikeMoodboard}>
+            <HeikeMoodboard />
           </div>
 
           <div style={styles.moodboard} className="moodboard custom-cursor">
@@ -389,6 +496,7 @@ const NonsauceIndex = () => {
               style={styles.hiddenInput}
             />
           </div>
+
         </div>
       </div>
     </>
