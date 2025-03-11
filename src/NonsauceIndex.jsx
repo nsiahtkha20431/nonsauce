@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import './scrollbar.css';
 import CustomCursor from './CustomCursor';
+import JournalComponent from './JournalComponent';
 import './cursor.css';
 
 const styles = {
@@ -428,6 +429,8 @@ const NonsauceIndex = () => {
     };
   }, [isDragging, dragStart]);
 
+  console.log('Upload component:', Upload);
+
   return (
     <>
       <CustomCursor />
@@ -480,13 +483,17 @@ const NonsauceIndex = () => {
               />
             ))}
             <button
-              style={{
-                ...styles.uploadButton,
-                cursor: 'none'
-              }}
+              style={styles.uploadButton}
               onClick={() => fileInputRef.current.click()}
             >
-              <Upload size={20} />
+              <div style={{ 
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)' 
+              }}>
+                <Upload size={24} color="white" />
+              </div>
             </button>
             <input
               ref={fileInputRef}
@@ -496,6 +503,8 @@ const NonsauceIndex = () => {
               style={styles.hiddenInput}
             />
           </div>
+
+          <JournalComponent />
 
         </div>
       </div>
