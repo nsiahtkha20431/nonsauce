@@ -1,0 +1,80 @@
+.custom-cursor {
+  cursor: none;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff66b2;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+}
+
+.cursor-dot::before,
+.cursor-dot::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background-color: #ff66b2;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.cursor-dot::before {
+  top: -4px;
+  left: 0;
+}
+
+.cursor-dot::after {
+  top: 0;
+  left: 4px;
+}
+
+.cursor-dot.clicked {
+  transform: rotate(-45deg) scale(0.8);
+}
+
+.sparkle {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: sparkle 0.7s ease-out forwards;
+}
+
+.sparkle::before {
+  content: '✧';  /* You could also use: ⋆ ✧ ✦ ★ ☆ */
+  position: absolute;
+  color: #ff66b2;
+  font-size: 14px;
+  text-shadow: 0 0 2px #fff;
+  transform-origin: center;
+  animation: sparkleRotate 0.7s linear;
+}
+
+@keyframes sparkleRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.3) translate(var(--tx, 30px), var(--ty, -30px));
+    opacity: 0;
+  }
+}
